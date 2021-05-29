@@ -267,8 +267,9 @@ module.exports = {
                             {
                                 loader: 'url-loader',
                                 options: {
-                                    outputPath: 'img',
-                                    name: '[hash:8].[ext]',
+                                    // outputPath: 'img',
+                                    //  也可以写成下方的形式，会自动生成imgs目录
+                                    name: 'imgs/[hash:8].[ext]',
                                     limit: 10 * 1024
                                 }
                             }
@@ -353,7 +354,7 @@ module.exports = {
         }),
         //  抽取css文件
         new MiniCssExtractPlugin({
-            filename: '[name].[contenthash:8].css',
+            filename: 'myCss/[name].[contenthash:8].css',
             // chunkFilename:'[id].css'
         })
     ],
