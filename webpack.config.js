@@ -262,19 +262,41 @@ module.exports = {
                         ]
                     },
                     {
+                        // test: /\.(jpg|png|gif|svg)$/,
+                        // use: [
+                        //     {
+                        //         loader: 'url-loader',
+                        //         options: {
+                        //             // outputPath: 'img',
+                        //             //  也可以写成下方的形式，会自动生成imgs目录
+                        //             name: 'imgs/[hash:8].[ext]',
+                        //             // 在使用url-loader时，如果不加限制，则使用base64将全部图片打包
+                        //             //  file-loader 没有将图片使用base64打包的功能
+                        //             //  一般小图片才使用base64
+                        //             limit: 10 * 1024
+                        //         }
+                        //     }
+                        // ],
+
+
+                        //  使用 asset module type(资源模块类型),通过添加四种新的模块类型，
+                        //  来替换 [raw|url|file]-loader
+                        //  asset/resouce   发送一个单独的文件并导出 url，之前通过使用 file-loader 实现
+                        //  asset/inline    导出一个资源的data URL。之前通过使用 url-loader 实现
+                        //  asset/source    导出资源的源码。之前通过 raw-loader 实现
+                        //  asset   在导出一个data URL 和发送一个单独的文件之间自动选择。之前通过url-loader实现，
+                        //  通过配置资源体积限制实现
                         test: /\.(jpg|png|gif|svg)$/,
-                        use: [
-                            {
-                                loader: 'url-loader',
-                                options: {
-                                    // outputPath: 'img',
-                                    //  也可以写成下方的形式，会自动生成imgs目录
-                                    name: 'imgs/[hash:8].[ext]',
-                                    // 如果不加限制，则使用base64将全部图片打包
-                                    // limit: 10 * 1024
-                                }
+                        type: "asset",
+                        generator:{
+                            // 注意取到的资源名会包含一个点,所以后置不需要加点了
+                            filename:"img/[name]_[hash:6][ext]"
+                        },
+                        parser: {
+                            dataUrlCondition: {
+                                maxSize: 1 * 1024
                             }
-                        ],
+                        }
                     },
                     {
                         test: /\.html$/,
