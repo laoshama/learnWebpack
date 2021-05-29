@@ -3,6 +3,6 @@
     height: 100px;
     background-color: #f00;
 
-    display: flex;
-    backface-visibility: hidden;
+    /* display: flex; */
+    /* backface-visibility: hidden; */
 }

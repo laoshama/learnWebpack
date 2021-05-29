@@ -1,8 +1,8 @@
 // webpack 打包入口文件
 
 //  导入样式文件
-// import './a.css';
-// import './b.less';
+import './a.css';
+import './b.less';
 import showMsg from './build';
 import $ from 'jquery'
 // import { mul } from './test'

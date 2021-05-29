@@ -186,11 +186,22 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin')
 const webpack = require('webpack')
 // const CopyWebpackPlugin = require('copy-webpack-plugin')
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 /*
     PWA:渐进式网络开发应用程序（离线可访问）
     workbox --> workbox-webpack-plugin
 */
+
+const postcssLoader = {
+    loader: 'postcss-loader',
+    options: {
+        postcssOptions: {
+            plugins: ['postcss-preset-env']
+        }
+    }
+}
 
 module.exports = {
     //   单入口
@@ -229,34 +240,48 @@ module.exports = {
                 //  oneOf优化构建打包速度
                 oneOf: [
                     {
-                        test: /\.css$/,
+                        test: /\.css$/i,
                         use: [
-                            // MiniCssExtractPlugin.loader,
-                            'style-loader',
+                            {
+                                loader: MiniCssExtractPlugin.loader,
+                                options: {}
+                            },
+                            // 'style-loader',
                             'css-loader',
-                            // postcssLoader
+                            postcssLoader
                         ]
                     },
                     {
                         test: /\.less$/,
                         use: [
-                            // MiniCssExtractPlugin.loader,
-                            'style-loader',
+                            MiniCssExtractPlugin.loader,
+                            // 'style-loader',
                             'css-loader',
-                            // postcssLoader,
+                            postcssLoader,
                             'less-loader'
                         ]
                     },
                     {
                         test: /\.(jpg|png|gif|svg)$/,
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8 * 1024
-                        }
+                        use: [
+                            {
+                                loader: 'url-loader',
+                                options: {
+                                    outputPath: 'img',
+                                    name: '[hash:8].[ext]',
+                                    limit: 10 * 1024
+                                }
+                            }
+                        ],
                     },
                     {
                         test: /\.html$/,
-                        loader: 'html-loader'
+                        use: {
+                            loader: 'html-loader',
+                            options: {
+                                esModule: false
+                            }
+                        },
                     },
                     // 配置babel
                     {
@@ -318,13 +343,18 @@ module.exports = {
             clientsClaim: true,
             skipWaiting: true
         }),
-        //  告诉webpack那些库不参与打包，同时使用时的名称也得变化
+        // //  告诉webpack那些库不参与打包，同时使用时的名称也得变化
         new webpack.DllReferencePlugin({
             manifest: resolve(__dirname, 'dll/manifest.json')
         }),
-        //  将某个文件打包出去，并且在html中自动引入该资源
+        // //  将某个文件打包出去，并且在html中自动引入该资源
         new AddAssetHtmlWebpackPlugin({
             filepath: resolve(__dirname, 'dll/jquery.js')
+        }),
+        //  抽取css文件
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash:8].css',
+            // chunkFilename:'[id].css'
         })
     ],
     /* 
