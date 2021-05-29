@@ -270,7 +270,8 @@ module.exports = {
                                     // outputPath: 'img',
                                     //  也可以写成下方的形式，会自动生成imgs目录
                                     name: 'imgs/[hash:8].[ext]',
-                                    limit: 10 * 1024
+                                    // 如果不加限制，则使用base64将全部图片打包
+                                    // limit: 10 * 1024
                                 }
                             }
                         ],
