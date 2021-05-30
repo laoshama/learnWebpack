@@ -194,14 +194,14 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
     workbox --> workbox-webpack-plugin
 */
 
-const postcssLoader = {
-    loader: 'postcss-loader',
-    options: {
-        postcssOptions: {
-            plugins: ['postcss-preset-env']
-        }
-    }
-}
+// const postcssLoader = {
+//     loader: 'postcss-loader',
+//     options: {
+//         postcssOptions: {
+//             plugins: ['postcss-preset-env']
+//         }
+//     }
+// }
 
 module.exports = {
     //   单入口
@@ -248,7 +248,8 @@ module.exports = {
                             },
                             // 'style-loader',
                             'css-loader',
-                            postcssLoader
+                            // postcssLoader
+                            'postcss-loader'
                         ]
                     },
                     {
@@ -257,7 +258,8 @@ module.exports = {
                             MiniCssExtractPlugin.loader,
                             // 'style-loader',
                             'css-loader',
-                            postcssLoader,
+                            // postcssLoader,
+                            'postcss-loader',
                             'less-loader'
                         ]
                     },
@@ -288,9 +290,9 @@ module.exports = {
                         //  通过配置资源体积限制实现
                         test: /\.(jpg|png|gif|svg)$/,
                         type: "asset",
-                        generator:{
+                        generator: {
                             // 注意取到的资源名会包含一个点,所以后置不需要加点了
-                            filename:"img/[name]_[hash:6][ext]"
+                            filename: "img/[name]_[hash:6][ext]"
                         },
                         parser: {
                             dataUrlCondition: {
@@ -327,7 +329,7 @@ module.exports = {
                             {
                                 loader: 'babel-loader',
                                 options: {
-                                    presets: ['@babel/preset-env'],
+                                    // presets: ['@babel/preset-env'],
                                     //  开启babel缓存，第二次构建时会读取之前的缓存，构建速度更快
                                     //  babel缓存   和  给文件名添加哈希值（每次webpack打包都会生成一个哈希值）  一起使用,
                                     //  解决修改源文件的时候浏览器会使用新的打包好的文件，而不是直接读取缓存文件
